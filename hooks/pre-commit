@@ -1,0 +1,2 @@
+hugo --theme=paper --baseUrl="https://www.supuwoerc.xyz"
+exit 0
