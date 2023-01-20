@@ -1,0 +1,12 @@
+# 这个是关键：改为你的服务器或者服务器ip地址
+baseURL = 'http://www.suouwoerc.xyz/'
+# [en, zh-cn, fr, ...] 设置默认的语言
+defaultContentLanguage = "zh-cn"
+# 网站语言, 仅在这里 CN 大写
+languageCode = "zh-CN"
+# 更改使用 Hugo 构建网站时使用的默认主题，即为你下载的主题
+theme = "paper"
+title = "Salud!"
+
+[params]
+ github = 'supuwoerc' 

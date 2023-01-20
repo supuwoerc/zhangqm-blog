@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Salud!</title>
+    <link>https://www.supuwoerc.xyz/</link>
+    <description>Recent content on Salud!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 19 Jan 2023 16:43:12 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>缓存小结</title>
+      <link>https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Thu, 19 Jan 2023 16:43:12 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</guid>
+      <description>http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If-None-Match（对应Etag）和If-Modified-Since（对应Last-Modified）判断资源是否过期，没过期则返回304状态码，浏览器依旧用disk里的资源。如果资源过期，则服务端会返回新的资源 没命中协商缓存则发起真实的请求，从服务器获取资源 浏览器访问资源的情况 从强缓存开始判断 地址栏输入URL回车 页面中的Link跳转/打开新窗口/新标签页/history的前进后退 Initiator值为Other的内容，跳过强缓存，从协商缓存开始判断的情况（浏览器会在请求头自动带上Cache-Control:max-age=0） 点击刷新按钮 f5/ctrl+r刷新按钮 发起真实的请求到服务器（浏览器会在请求头自动带上Cache-Control:no-cache&amp;amp;Pragma:no-cache） 硬性重新加载（disk上的缓存不会删除） ctrl+f5（disk上的缓存不会删除） ctrl+shift+r（disk上的缓存不会删除） 勾选了disable-cache后的刷新（disk上的缓存不会删除） 清空缓存后硬性加载（disk上的缓存会删除） Cache-Control在请求头和在响应头的区别 在请求头中的Cache-Control影响的是当前这一次请求，响应头是告诉浏览器如何处理响应数据，影响的是未来的请求。
+Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实的请求到服务器，会判断是否满足协商缓存的条件，满足的话加载协商缓存 Cache-Control:no-cache：此次请求不会读取缓存资源，即使缓存未过期 SPA单页应用的设置 入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。 css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入 location / {if ($uri = &amp;#39;/index.html&amp;#39;){add_header Cache-control &amp;#39;no-store&amp;#39;;}} 参考 mdn上关于Cache-Control的文档 解决单页应用html被缓存的nginx配置 </description>
+    </item>
+    
+    <item>
+      <title>使用jenkins自动部署hugo博客</title>
+      <link>https://www.supuwoerc.xyz/post/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2hugo%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Thu, 19 Jan 2023 16:43:12 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/post/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2hugo%E5%8D%9A%E5%AE%A2/</guid>
+      <description>服务器安装jdk jenkins最新版本要求jdk版本要11或者17的版本，我自己最开始服务器上部署过jdk1.8所以得先卸载掉
+查询和卸载已经安装过的jdk rpm -qa | grep java #查看已经安装到jdk信息 rpm -e --nodeps java-* #卸载上一步查询到的jdk相关信息&amp;lt;和openjdk相关的jdk全部卸载&amp;gt; 安装jdk17到服务器 cd /usr/local # 找一个目录安装jdk wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz tar -zxvf jdk-17_linux-x64_bin.tar.gz 配置环境变量 vim /etc/profile #进入profile文件,在文件的最后面添加java老三样的配置 # 在文件最下方添加 export JAVA_HOME=/usr/local/java-17.0.6 #配置下java_home就行,下面的两个变量依赖于它 export PATH=$PATH:$JAVA_HOME/bin; export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar; source /etc/profile #刷新环境变量 java -version #检查安装结果 能输出java的版本信息就算安装成功了 jdk准备好之后就可以安装jenkins了 yum install -y jenkins #yum安装jenkins systemctl start jenkins #启动服务 #jenkins在启动之后会在输出信息里面将初始密码打印出来,但是我没注意到,没关系，可以在对应文件里面找到 #jenkins初始密码在这个位置/jenkins_home/secrets/initialAdminPassword jenkins之后在面板上选择默认的全家桶安装就行了&amp;lt;当然你也可以自己挑选需要的插件和工具&amp;gt; 开始配置git #先看自己的服务器有没有生成过ssh-key,没有的话需要先生成 ssh-keygen -t rsa -C &amp;#34;test@gmail.com&amp;#34; #生成ssh-key 将生成的公钥配置到github/gitlab/gitee上 将生成的私钥部署到jenkins的credentials里面 配置项目的git地址和构建要执行的脚本，这里我就很简单的配置了一下 #!/bin/sh -l echo &amp;#34;开始构建任务-进入/use/blog&amp;#34; cd /usr/blog echo &amp;#34;删除文件夹中全部文件&amp;#34; rm -rf * echo &amp;#34;开始克隆远程仓库内容到本地&amp;#34; git clone git@github.</description>
+    </item>
+    
+    <item>
+      <title>辞旧岁</title>
+      <link>https://www.supuwoerc.xyz/post/%E8%BE%9E%E6%97%A7%E5%B2%81/</link>
+      <pubDate>Tue, 17 Jan 2023 20:27:47 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/post/%E8%BE%9E%E6%97%A7%E5%B2%81/</guid>
+      <description>年末岁初 2023年末，放假的第一天，打开音乐戴上耳机，随机到的是李志的《墙上的向日葵》，正如歌词里面唱的一样：“时光就这样悄悄的溜走”，忽然意识一年已经过去了，我始终是一个比较悲观的人，每次想到未来，我大概率是不太有乐观的，但即使这样，似乎在生活中我一直在给别人正反馈和一些不能作用于自己的比较正面的劝诫，想起这一年也是发生了许多，赶在农历新年之前记录一下。
+今年发生的事情很多，裸辞，新工作，新冠，亲人的离开，以及明年要迎接的新生命，其实我自己内心似乎还没能接受自己身份上的转变，这一些事情积累起来似乎应该很久，但恰恰相反，它们发生的太快了。不知道是不是这些就算是人生的阅历，感觉自己的心理年龄突然就被这些经历的事情快速提高，或许是无病呻吟，或许是多愁善感，年末的时间自己经常回想之前的一些经历，给自己一些从这些经历上学到的教训，在未来的日子里能提醒自己不再毫无防备的犯错。
+角色 这几年自己养起了记录待办的习惯，年末自己的待办上多出了年底要讨论的房贷，明年孩子出生前的一些准备事项，过年要准备的一些琐碎。这些之前我一直依赖父母的帮助，现在也是他们帮我来置办一些零碎，但是脑子里意识到慢慢的我要接替我新的角色，新的身份了，国庆回家置办房子的一些事情，心底意识到父母已经老了，他们在慢慢的与社会脱节，他们习惯于用他们的习惯去处理所有的事情，而常常不符合社会的新规则。一代人慢慢老去，一代人慢慢离开，而我这一代正慢慢变为曾经的“大人们”，“家长们”，，虽然这些事情是自然规律，合情合理，但是给我的感觉就是发生的很突然，感慨良多。
+熵增 和前面提到的一样，不管愿望如何，我对未来的看法是不乐观的，我讨厌生活中各种零碎的事情搅扰我的生活，但是目前来看，熵增原理似乎也适用于生活，生活里的琐碎只会越来越多，越来越乱。
+“像恐惧的鱼，拼命的游，时光就这样悄悄的溜走”
+希望明年能平静些。</description>
+    </item>
+    
+  </channel>
+</rss>
