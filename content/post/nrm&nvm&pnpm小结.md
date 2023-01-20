@@ -1,0 +1,109 @@
+---
+title: "nrm&nvm&pnpm小结"
+date: 2023-01-20T19:51:09+08:00
+categories: "前端"
+tag: ["工具"]
+draft: true
+---
+
+### nrm：管理npm资源仓库的包
+
+* 安装
+
+```
+npm install -g nrm #全局安装
+nrm ls #查看当前可用的源
+nrm current #查看当前使用的源
+```
+
+* 添加源
+
+```
+nrm add <registry> <url> #添加源
+```
+
+* 切换源
+
+```
+nrm use taobao #切换到taobao源
+```
+
+* 测试源速度
+
+```
+nrm test <registry> #测试源
+```
+
+* 删除源
+
+```
+nrm del <registry>#删除源
+```
+
+### nvm：管理 node版本的包
+
+* 安装
+
+```
+brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装
+```
+
+* 安装不同的node版本
+
+```
+nvm install <version> #安装特定版本号的node
+```
+
+* 卸载某一个版本的node
+
+```
+nvm uninstall <version> #卸载具体版本的node
+```
+
+* 切换版本
+
+```
+nvm use <version> #切换某一个版本
+```
+
+* 查看已经安装的版本
+
+```
+nvm ls #查看本地安装的版本列表
+```
+
+* 查看远程仓库的所有可安装版本
+
+```
+nvm ls-remote #查看可安装的全部版本
+```
+
+### pnpm：高性能的包管理工具
+
+* 安装
+
+```
+npm install -g pnpm #全局安装pnpm
+```
+
+* 配置本地的仓库位置
+
+```
+pnpm config set registry http://registry.npm.taobao.org  #设置pnpm仓库的源
+```
+
+* 关于安装依赖的一些命令
+
+```
+pnpm install xxx  #安装包
+pnpm add -D xxx #写入开发依赖里面
+pnpm add -g  xxx  #全局安装
+```
+
+* 更新和卸载包
+
+```
+pnpm up  xxx #更新包
+pnpm remove xxx #卸载包
+```
+
