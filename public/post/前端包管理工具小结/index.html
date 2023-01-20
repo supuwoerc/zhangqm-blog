@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="zh-CN"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>前端包管理工具小结 - Salud!</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry." />
+  <meta
+    name="author"
+    content=""
+  />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://www.supuwoerc.xyz/main.min.css" />
+
+  
+  <script
+    defer
+    src="https://www.supuwoerc.xyz/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+   
+  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/theme.png" />
+
+  
+  
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/github.svg" />
+  
+
+  
+  <link rel="icon" href="https://www.supuwoerc.xyz/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://www.supuwoerc.xyz/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.109.0">
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="前端包管理工具小结" />
+<meta property="og:description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-20T19:51:09+08:00" />
+<meta property="article:modified_time" content="2023-01-20T19:51:09+08:00" />
+
+  
+  <meta itemprop="name" content="前端包管理工具小结">
+<meta itemprop="description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry."><meta itemprop="datePublished" content="2023-01-20T19:51:09+08:00" />
+<meta itemprop="dateModified" content="2023-01-20T19:51:09+08:00" />
+<meta itemprop="wordCount" content="102">
+<meta itemprop="keywords" content="" />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="前端包管理工具小结"/>
+<meta name="twitter:description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a
+      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
+      href="https://www.supuwoerc.xyz"
+      >Salud!</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/supuwoerc "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">前端包管理工具小结</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Jan 20, 2023</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h3 id="nrm管理npm资源仓库的包">nrm：管理npm资源仓库的包</h3>
+<ul>
+<li>安装</li>
+</ul>
+<pre tabindex="0"><code>npm install -g nrm #全局安装
+nrm ls #查看当前可用的源
+nrm current #查看当前使用的源
+</code></pre><ul>
+<li>添加源</li>
+</ul>
+<pre tabindex="0"><code>nrm add &lt;registry&gt; &lt;url&gt; #添加源
+</code></pre><ul>
+<li>切换源</li>
+</ul>
+<pre tabindex="0"><code>nrm use taobao #切换到taobao源
+</code></pre><ul>
+<li>测试源速度</li>
+</ul>
+<pre tabindex="0"><code>nrm test &lt;registry&gt; #测试源
+</code></pre><ul>
+<li>删除源</li>
+</ul>
+<pre tabindex="0"><code>nrm del &lt;registry&gt;#删除源
+</code></pre><h3 id="nvm管理-node版本的包">nvm：管理 node版本的包</h3>
+<ul>
+<li>安装</li>
+</ul>
+<pre tabindex="0"><code>brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装
+</code></pre><ul>
+<li>安装不同的node版本</li>
+</ul>
+<pre tabindex="0"><code>nvm install &lt;version&gt; #安装特定版本号的node
+</code></pre><ul>
+<li>卸载某一个版本的node</li>
+</ul>
+<pre tabindex="0"><code>nvm uninstall &lt;version&gt; #卸载具体版本的node
+</code></pre><ul>
+<li>切换版本</li>
+</ul>
+<pre tabindex="0"><code>nvm use &lt;version&gt; #切换某一个版本
+</code></pre><ul>
+<li>查看已经安装的版本</li>
+</ul>
+<pre tabindex="0"><code>nvm ls #查看本地安装的版本列表
+</code></pre><ul>
+<li>查看远程仓库的所有可安装版本</li>
+</ul>
+<pre tabindex="0"><code>nvm ls-remote #查看可安装的全部版本
+</code></pre><h3 id="pnpm高性能的包管理工具">pnpm：高性能的包管理工具</h3>
+<ul>
+<li>安装</li>
+</ul>
+<pre tabindex="0"><code>npm install -g pnpm #全局安装pnpm
+</code></pre><ul>
+<li>配置本地的仓库位置</li>
+</ul>
+<pre tabindex="0"><code>pnpm config set registry http://registry.npm.taobao.org  #设置pnpm仓库的源
+</code></pre><ul>
+<li>关于安装依赖的一些命令</li>
+</ul>
+<pre tabindex="0"><code>pnpm install xxx  #安装包
+pnpm add -D xxx #写入开发依赖里面
+pnpm add -g  xxx  #全局安装
+</code></pre><ul>
+<li>更新和卸载包</li>
+</ul>
+<pre tabindex="0"><code>pnpm up  xxx #更新包
+pnpm remove xxx #卸载包
+</code></pre></section>
+
+  
+  
+
+  
+  
+  
+  <nav
+    class="mt-24 flex rounded-lg bg-black/[3%] p-1.5 text-lg dark:bg-white/[8%]"
+  >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end rounded-md p-6 pl-3 no-underline hover:bg-black/[2%]"
+      href="https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/"
+      ><span>缓存小结</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+
+  
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
+>
+  <div class="mr-auto">
+    &copy; 2023
+    <a class="link" href="https://www.supuwoerc.xyz">Salud!</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >Powered by Hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>
