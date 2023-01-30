@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>前端 on Salud</title>
+    <link>https://www.supuwoerc.xyz/tags/%E5%89%8D%E7%AB%AF/</link>
+    <description>Recent content in 前端 on Salud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 20 Jan 2023 19:51:09 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/tags/%E5%89%8D%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端包管理工具小结</title>
+      <link>https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Fri, 20 Jan 2023 19:51:09 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/</guid>
+      <description>nrm：管理npm资源仓库的包 安装 1 2 3 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 1 nrm add &amp;lt;registry&amp;gt; &amp;lt;url&amp;gt; #添加源 切换源 1 nrm use taobao</description>
+    </item>
+    
+    <item>
+      <title>缓存小结</title>
+      <link>https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Thu, 19 Jan 2023 16:43:12 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</guid>
+      <description>http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request</description>
+    </item>
+    
+  </channel>
+</rss>

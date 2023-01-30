@@ -1,7 +1,11 @@
 ---
 title: "使用jenkins自动部署hugo博客"
 date: 2023-01-19T16:43:12+08:00
-draft: false
+lastmod: 2023-01-19T16:43:12+08:00
+menu: "tech"
+tags: ["琐碎"]
+categories: ["技术"]
+weight: 50
 ---
 
 ### 服务器安装jdk

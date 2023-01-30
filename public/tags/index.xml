@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Salud!</title>
+    <title>Tags on Salud</title>
     <link>https://www.supuwoerc.xyz/tags/</link>
-    <description>Recent content in Tags on Salud!</description>
+    <description>Recent content in Tags on Salud</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language><atom:link href="https://www.supuwoerc.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 20 Jan 2023 19:51:09 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端</title>
+      <link>https://www.supuwoerc.xyz/tags/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Fri, 20 Jan 2023 19:51:09 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/tags/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>琐碎</title>
+      <link>https://www.supuwoerc.xyz/tags/%E7%90%90%E7%A2%8E/</link>
+      <pubDate>Thu, 19 Jan 2023 16:43:12 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/tags/%E7%90%90%E7%A2%8E/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>日常</title>
+      <link>https://www.supuwoerc.xyz/tags/%E6%97%A5%E5%B8%B8/</link>
+      <pubDate>Tue, 17 Jan 2023 20:27:47 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/tags/%E6%97%A5%E5%B8%B8/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

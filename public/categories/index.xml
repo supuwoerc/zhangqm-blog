@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Salud!</title>
+    <title>Categories on Salud</title>
     <link>https://www.supuwoerc.xyz/categories/</link>
-    <description>Recent content in Categories on Salud!</description>
+    <description>Recent content in Categories on Salud</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 20 Jan 2023 19:51:09 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>技术</title>
+      <link>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Fri, 20 Jan 2023 19:51:09 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>生活</title>
+      <link>https://www.supuwoerc.xyz/categories/%E7%94%9F%E6%B4%BB/</link>
+      <pubDate>Tue, 17 Jan 2023 20:27:47 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/categories/%E7%94%9F%E6%B4%BB/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

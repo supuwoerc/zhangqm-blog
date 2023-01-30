@@ -1,237 +1,171 @@
 <!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>缓存小结 - Salud</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="zhangqm" /><meta name="description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request" /><meta name="keywords" content="Hugo, blog, salud, zhangqm, 前端, 技术, 代码, 程序" />
 
 
 
 
 
 
+<meta name="generator" content="Hugo 0.109.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.7c7c57044d415861e8f490711427310afa7bdf6cbd217c11e71d9d3e66a35348.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<html
-  class="not-ready text-sm lg:text-base"
-  style="--bg: #faf6f1"
-  lang="zh-CN"
->
-  <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, shrink-to-fit=no"
-  />
-
-  
-  <title>缓存小结 - Salud!</title>
-
-  
-  <meta name="theme-color" />
-  
-  <meta name="description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If-None-Match（对应Etag）和If-Modified-Since（对应Last-Modified）判断资源是否过期，没过期则返回304状态码，浏览器依旧用disk里的资源。如果资源过期，则服务端会返回新的资源 没命中协商缓存则发起真实的请求，从服务器获取资源 浏览器访问资源的情况 从强缓存开始判断 地址栏输入URL回车 页面中的Link跳转/打开新窗口/新标签页/history的前进后退 Initiator值为Other的内容，跳过强缓存，从协商缓存开始判断的情况（浏览器会在请求头自动带上Cache-Control:max-age=0） 点击刷新按钮 f5/ctrl&#43;r刷新按钮 发起真实的请求到服务器（浏览器会在请求头自动带上Cache-Control:no-cache&amp;Pragma:no-cache） 硬性重新加载（disk上的缓存不会删除） ctrl&#43;f5（disk上的缓存不会删除） ctrl&#43;shift&#43;r（disk上的缓存不会删除） 勾选了disable-cache后的刷新（disk上的缓存不会删除） 清空缓存后硬性加载（disk上的缓存会删除） Cache-Control在请求头和在响应头的区别 在请求头中的Cache-Control影响的是当前这一次请求，响应头是告诉浏览器如何处理响应数据，影响的是未来的请求。
-Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实的请求到服务器，会判断是否满足协商缓存的条件，满足的话加载协商缓存 Cache-Control:no-cache：此次请求不会读取缓存资源，即使缓存未过期 SPA单页应用的设置 入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。 css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入 location / {if ($uri = &#39;/index.html&#39;){add_header Cache-control &#39;no-store&#39;;}} 参考 mdn上关于Cache-Control的文档 解决单页应用html被缓存的nginx配置 " />
-  <meta
-    name="author"
-    content=""
-  />
-  
-
-  
-  
-  
-  
-  
-  
-  <link rel="preload stylesheet" as="style" href="https://www.supuwoerc.xyz/main.min.css" />
-
-  
-  <script
-    defer
-    src="https://www.supuwoerc.xyz/highlight.min.js"
-    onload="hljs.initHighlightingOnLoad();"
-  ></script>
-  
-
-  
-   
-  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/theme.png" />
-
-  
-  
-  
-  
-
-  
-  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/github.svg" />
-  
-
-  
-  <link rel="icon" href="https://www.supuwoerc.xyz/favicon.ico" />
-  <link rel="apple-touch-icon" href="https://www.supuwoerc.xyz/apple-touch-icon.png" />
-
-  
-  <meta name="generator" content="Hugo 0.109.0">
-
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <meta property="og:title" content="缓存小结" />
-<meta property="og:description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If-None-Match（对应Etag）和If-Modified-Since（对应Last-Modified）判断资源是否过期，没过期则返回304状态码，浏览器依旧用disk里的资源。如果资源过期，则服务端会返回新的资源 没命中协商缓存则发起真实的请求，从服务器获取资源 浏览器访问资源的情况 从强缓存开始判断 地址栏输入URL回车 页面中的Link跳转/打开新窗口/新标签页/history的前进后退 Initiator值为Other的内容，跳过强缓存，从协商缓存开始判断的情况（浏览器会在请求头自动带上Cache-Control:max-age=0） 点击刷新按钮 f5/ctrl&#43;r刷新按钮 发起真实的请求到服务器（浏览器会在请求头自动带上Cache-Control:no-cache&amp;Pragma:no-cache） 硬性重新加载（disk上的缓存不会删除） ctrl&#43;f5（disk上的缓存不会删除） ctrl&#43;shift&#43;r（disk上的缓存不会删除） 勾选了disable-cache后的刷新（disk上的缓存不会删除） 清空缓存后硬性加载（disk上的缓存会删除） Cache-Control在请求头和在响应头的区别 在请求头中的Cache-Control影响的是当前这一次请求，响应头是告诉浏览器如何处理响应数据，影响的是未来的请求。
-Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实的请求到服务器，会判断是否满足协商缓存的条件，满足的话加载协商缓存 Cache-Control:no-cache：此次请求不会读取缓存资源，即使缓存未过期 SPA单页应用的设置 入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。 css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入 location / {if ($uri = &#39;/index.html&#39;){add_header Cache-control &#39;no-store&#39;;}} 参考 mdn上关于Cache-Control的文档 解决单页应用html被缓存的nginx配置 " />
+<meta property="og:title" content="缓存小结" />
+<meta property="og:description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-01-19T16:43:12+08:00" />
 <meta property="article:modified_time" content="2023-01-19T16:43:12+08:00" />
-
-  
-  <meta itemprop="name" content="缓存小结">
-<meta itemprop="description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If-None-Match（对应Etag）和If-Modified-Since（对应Last-Modified）判断资源是否过期，没过期则返回304状态码，浏览器依旧用disk里的资源。如果资源过期，则服务端会返回新的资源 没命中协商缓存则发起真实的请求，从服务器获取资源 浏览器访问资源的情况 从强缓存开始判断 地址栏输入URL回车 页面中的Link跳转/打开新窗口/新标签页/history的前进后退 Initiator值为Other的内容，跳过强缓存，从协商缓存开始判断的情况（浏览器会在请求头自动带上Cache-Control:max-age=0） 点击刷新按钮 f5/ctrl&#43;r刷新按钮 发起真实的请求到服务器（浏览器会在请求头自动带上Cache-Control:no-cache&amp;Pragma:no-cache） 硬性重新加载（disk上的缓存不会删除） ctrl&#43;f5（disk上的缓存不会删除） ctrl&#43;shift&#43;r（disk上的缓存不会删除） 勾选了disable-cache后的刷新（disk上的缓存不会删除） 清空缓存后硬性加载（disk上的缓存会删除） Cache-Control在请求头和在响应头的区别 在请求头中的Cache-Control影响的是当前这一次请求，响应头是告诉浏览器如何处理响应数据，影响的是未来的请求。
-Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实的请求到服务器，会判断是否满足协商缓存的条件，满足的话加载协商缓存 Cache-Control:no-cache：此次请求不会读取缓存资源，即使缓存未过期 SPA单页应用的设置 入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。 css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入 location / {if ($uri = &#39;/index.html&#39;){add_header Cache-control &#39;no-store&#39;;}} 参考 mdn上关于Cache-Control的文档 解决单页应用html被缓存的nginx配置 "><meta itemprop="datePublished" content="2023-01-19T16:43:12+08:00" />
+<meta itemprop="name" content="缓存小结">
+<meta itemprop="description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request"><meta itemprop="datePublished" content="2023-01-19T16:43:12+08:00" />
 <meta itemprop="dateModified" content="2023-01-19T16:43:12+08:00" />
-<meta itemprop="wordCount" content="41">
-<meta itemprop="keywords" content="" />
-  
-  <meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="978">
+<meta itemprop="keywords" content="前端," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="缓存小结"/>
-<meta name="twitter:description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If-None-Match（对应Etag）和If-Modified-Since（对应Last-Modified）判断资源是否过期，没过期则返回304状态码，浏览器依旧用disk里的资源。如果资源过期，则服务端会返回新的资源 没命中协商缓存则发起真实的请求，从服务器获取资源 浏览器访问资源的情况 从强缓存开始判断 地址栏输入URL回车 页面中的Link跳转/打开新窗口/新标签页/history的前进后退 Initiator值为Other的内容，跳过强缓存，从协商缓存开始判断的情况（浏览器会在请求头自动带上Cache-Control:max-age=0） 点击刷新按钮 f5/ctrl&#43;r刷新按钮 发起真实的请求到服务器（浏览器会在请求头自动带上Cache-Control:no-cache&amp;Pragma:no-cache） 硬性重新加载（disk上的缓存不会删除） ctrl&#43;f5（disk上的缓存不会删除） ctrl&#43;shift&#43;r（disk上的缓存不会删除） 勾选了disable-cache后的刷新（disk上的缓存不会删除） 清空缓存后硬性加载（disk上的缓存会删除） Cache-Control在请求头和在响应头的区别 在请求头中的Cache-Control影响的是当前这一次请求，响应头是告诉浏览器如何处理响应数据，影响的是未来的请求。
-Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实的请求到服务器，会判断是否满足协商缓存的条件，满足的话加载协商缓存 Cache-Control:no-cache：此次请求不会读取缓存资源，即使缓存未过期 SPA单页应用的设置 入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。 css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入 location / {if ($uri = &#39;/index.html&#39;){add_header Cache-control &#39;no-store&#39;;}} 参考 mdn上关于Cache-Control的文档 解决单页应用html被缓存的nginx配置 "/>
+<meta name="twitter:description" content="http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request"/>
 
-  
-  
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-  <body class="text-black duration-200 ease-out dark:text-white">
-    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
-  <div class="relative z-50 mr-auto flex items-center">
-    <a
-      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
-      href="https://www.supuwoerc.xyz"
-      >Salud!</a
-    >
-    <a
-      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
-    ></a>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Salud</a>
   </div>
-
-  <a
-    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
-  ></a>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">技术</li>
+      </a><a href="/life/">
+        <li class="mobile-menu-item">生活</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
 
   
-  <script>
-    
-    const htmlClass = document.documentElement.classList;
-    setTimeout(() => {
-      htmlClass.remove('not-ready');
-    }, 10);
 
-    
-    const btnMenu = document.querySelector('.btn-menu');
-    btnMenu.addEventListener('click', () => {
-      htmlClass.toggle('open');
-    });
 
-    
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-    const lightBg = `"#faf6f1"`.replace(/"/g, '');
-    const setDark = (isDark) => {
-      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
-      htmlClass[isDark ? 'add' : 'remove']('dark');
-      localStorage.setItem('dark', isDark);
-    };
+</nav>
 
-    
-    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    if (htmlClass.contains('dark')) {
-      setDark(true);
-    } else {
-      const darkVal = localStorage.getItem('dark');
-      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
-    }
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Salud</a>
+</div>
 
-    
-    darkScheme.addEventListener('change', (event) => {
-      setDark(event.matches);
-    });
 
-    
-    const btnDark = document.querySelector('.btn-dark');
-    btnDark.addEventListener('click', () => {
-      setDark(localStorage.getItem('dark') !== 'true');
-    });
-  </script>
 
-  <div
-    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
-  >
-    
-    
 
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">技术</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/life/">生活</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
     
-    <nav
-      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
-    >
-      
-      <a
-        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
-        style="--url: url(./github.svg)"
-        href=" https://github.com/supuwoerc "
-        target="_blank"
-      ></a>
-      
-    </nav>
-    
+    <header class="post-header">
+      <h1 class="post-title">缓存小结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-01-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a>
+            </div>
+          <span class="more-meta"> 约 978 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#http-cache优先级">http-cache优先级</a></li>
+            <li><a href="#浏览器访问资源的情况">浏览器访问资源的情况</a></li>
+            <li><a href="#cache-control在请求头和在响应头的区别">Cache-Control在请求头和在响应头的区别</a></li>
+            <li><a href="#request-header中cache-control的含义">Request-header中Cache-Control的含义</a></li>
+            <li><a href="#spa单页应用的设置">SPA单页应用的设置</a></li>
+            <li><a href="#参考">参考</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
-</header>
-
-
-    <main
-      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
-    >
-      
-
-<article>
-  <header class="mb-20">
-    <h1 class="!my-0 pb-2.5">缓存小结</h1>
-
-    
-    <div class="text-sm opacity-60">
-      
-      <time>Jan 19, 2023</time>
-      
-      
-    </div>
-    
-  </header>
-
-  <section><h3 id="http-cache优先级">http-cache优先级</h3>
+</div>
+    <div class="post-content">
+      <h3 id="http-cache优先级">http-cache优先级</h3>
 <hr>
 <ol>
 <li>先判断是否命中强缓存，命中将从disk取相关资源</li>
@@ -278,73 +212,119 @@ Request-header中Cache-Control的含义 Cache-Control:max-age=0：发出真实�
 <li>入口文件index.html设置为协商缓存，每次都向服务器发起请求，确定资源是否过期。</li>
 <li>css，js设置为强缓存，因为在打包时会产生一个hash文件名，并且全部的静态资源都由html引入，所以只要获取到最新的index.html，这些静态资源都会被自动的引入</li>
 </ul>
-<pre tabindex="0"><code>location / {
-    if ($uri = &#39;/index.html&#39;){
-       add_header Cache-control &#39;no-store&#39;;
-    }
-}
-</code></pre><h3 id="参考">参考</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">location / {
+</span></span><span class="line"><span class="cl">    if ($uri = &#39;/index.html&#39;){
+</span></span><span class="line"><span class="cl">       add_header Cache-control &#39;no-store&#39;;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="参考">参考</h3>
 <hr>
 <ul>
 <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control" title="MDN上关于Cache-Control的文档">mdn上关于Cache-Control的文档</a></li>
 <li><a href="https://juejin.cn/post/7039526474193321997" title="单页应用html被缓存">解决单页应用html被缓存的nginx配置</a></li>
 </ul>
-</section>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">zhangqm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2023-01-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">前端包管理工具小结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2hugo%E5%8D%9A%E5%AE%A2/">
+            <span class="next-text nav-default">使用jenkins自动部署hugo博客</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
 
   
-  
 
   
-  
-  
-  <nav
-    class="mt-24 flex rounded-lg bg-black/[3%] p-1.5 text-lg dark:bg-white/[8%]"
-  >
-    
-    <a
-      class="flex w-1/2 items-center rounded-md p-6 pr-3 no-underline hover:bg-black/[2%]"
-      href="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/"
-      ><span class="mr-1.5">←</span><span>前端包管理工具小结</span></a
-    >
-    
-    
-    <a
-      class="ml-auto flex w-1/2 items-center justify-end rounded-md p-6 pl-3 no-underline hover:bg-black/[2%]"
-      href="https://www.supuwoerc.xyz/post/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2hugo%E5%8D%9A%E5%AE%A2/"
-      ><span>使用jenkins自动部署hugo博客</span><span class="ml-1.5">→</span></a
-    >
-    
-  </nav>
-  
 
-  
-  
-
-  
-  
-</article>
-
-
+      </div>
     </main>
 
-    <footer
-  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
->
-  <div class="mr-auto">
-    &copy; 2023
-    <a class="link" href="https://www.supuwoerc.xyz">Salud!</a>
-  </div>
-  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
-    >Powered by Hugo️️</a
-  >️
-  <a
-    class="link"
-    href="https://github.com/nanxiaobei/hugo-paper"
-    rel="noopener"
-    target="_blank"
-    >▷ Paper 6</a
-  >
-</footer>
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/supuwoerc" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.supuwoerc.xyz/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
 
-  </body>
+<div class="copyright">
+  <span class="power-by">
+    Power by <a class="hexo-link" href="https://gohugo.io">Hugo</a> 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme- - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>zhangqm</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
 </html>

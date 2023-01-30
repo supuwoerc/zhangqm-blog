@@ -1,350 +1,432 @@
 <!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>前端包管理工具小结 - Salud</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="zhangqm" /><meta name="description" content="nrm：管理npm资源仓库的包 安装 1 2 3 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 1 nrm add &amp;lt;registry&amp;gt; &amp;lt;url&amp;gt; #添加源 切换源 1 nrm use taobao" /><meta name="keywords" content="Hugo, blog, salud, zhangqm, 前端, 技术, 代码, 程序" />
 
 
 
 
 
 
+<meta name="generator" content="Hugo 0.109.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.7c7c57044d415861e8f490711427310afa7bdf6cbd217c11e71d9d3e66a35348.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<html
-  class="not-ready text-sm lg:text-base"
-  style="--bg: #faf6f1"
-  lang="zh-CN"
->
-  <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, shrink-to-fit=no"
-  />
-
-  
-  <title>前端包管理工具小结 - Salud!</title>
-
-  
-  <meta name="theme-color" />
-  
-  <meta name="description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry." />
-  <meta
-    name="author"
-    content=""
-  />
-  
-
-  
-  
-  
-  
-  
-  
-  <link rel="preload stylesheet" as="style" href="https://www.supuwoerc.xyz/main.min.css" />
-
-  
-  <script
-    defer
-    src="https://www.supuwoerc.xyz/highlight.min.js"
-    onload="hljs.initHighlightingOnLoad();"
-  ></script>
-  
-
-  
-   
-  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/theme.png" />
-
-  
-  
-  
-  
-
-  
-  <link rel="preload" as="image" href="https://www.supuwoerc.xyz/github.svg" />
-  
-
-  
-  <link rel="icon" href="https://www.supuwoerc.xyz/favicon.ico" />
-  <link rel="apple-touch-icon" href="https://www.supuwoerc.xyz/apple-touch-icon.png" />
-
-  
-  <meta name="generator" content="Hugo 0.109.0">
-
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <meta property="og:title" content="前端包管理工具小结" />
-<meta property="og:description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry." />
+<meta property="og:title" content="前端包管理工具小结" />
+<meta property="og:description" content="nrm：管理npm资源仓库的包 安装 1 2 3 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 1 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 1 nrm use taobao" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-01-20T19:51:09+08:00" />
 <meta property="article:modified_time" content="2023-01-20T19:51:09+08:00" />
-
-  
-  <meta itemprop="name" content="前端包管理工具小结">
-<meta itemprop="description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry."><meta itemprop="datePublished" content="2023-01-20T19:51:09+08:00" />
+<meta itemprop="name" content="前端包管理工具小结">
+<meta itemprop="description" content="nrm：管理npm资源仓库的包 安装 1 2 3 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 1 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 1 nrm use taobao"><meta itemprop="datePublished" content="2023-01-20T19:51:09+08:00" />
 <meta itemprop="dateModified" content="2023-01-20T19:51:09+08:00" />
-<meta itemprop="wordCount" content="102">
-<meta itemprop="keywords" content="" />
-  
-  <meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="415">
+<meta itemprop="keywords" content="前端," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="前端包管理工具小结"/>
-<meta name="twitter:description" content="nrm：管理npm资源仓库的包 安装 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 nrm use taobao #切换到taobao源 测试源速度 nrm test &lt;registry&gt; #测试源 删除源 nrm del &lt;registry&gt;#删除源 nvm：管理 node版本的包 安装 brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装 安装不同的node版本 nvm install &lt;version&gt; #安装特定版本号的node 卸载某一个版本的node nvm uninstall &lt;version&gt; #卸载具体版本的node 切换版本 nvm use &lt;version&gt; #切换某一个版本 查看已经安装的版本 nvm ls #查看本地安装的版本列表 查看远程仓库的所有可安装版本 nvm ls-remote #查看可安装的全部版本 pnpm：高性能的包管理工具 安装 npm install -g pnpm #全局安装pnpm 配置本地的仓库位置 pnpm config set registry http://registry."/>
+<meta name="twitter:description" content="nrm：管理npm资源仓库的包 安装 1 2 3 npm install -g nrm #全局安装 nrm ls #查看当前可用的源 nrm current #查看当前使用的源 添加源 1 nrm add &lt;registry&gt; &lt;url&gt; #添加源 切换源 1 nrm use taobao"/>
 
-  
-  
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-  <body class="text-black duration-200 ease-out dark:text-white">
-    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
-  <div class="relative z-50 mr-auto flex items-center">
-    <a
-      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
-      href="https://www.supuwoerc.xyz"
-      >Salud!</a
-    >
-    <a
-      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
-    ></a>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Salud</a>
   </div>
-
-  <a
-    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
-  ></a>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">技术</li>
+      </a><a href="/life/">
+        <li class="mobile-menu-item">生活</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
 
   
-  <script>
-    
-    const htmlClass = document.documentElement.classList;
-    setTimeout(() => {
-      htmlClass.remove('not-ready');
-    }, 10);
 
-    
-    const btnMenu = document.querySelector('.btn-menu');
-    btnMenu.addEventListener('click', () => {
-      htmlClass.toggle('open');
-    });
 
-    
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-    const lightBg = `"#faf6f1"`.replace(/"/g, '');
-    const setDark = (isDark) => {
-      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
-      htmlClass[isDark ? 'add' : 'remove']('dark');
-      localStorage.setItem('dark', isDark);
-    };
+</nav>
 
-    
-    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    if (htmlClass.contains('dark')) {
-      setDark(true);
-    } else {
-      const darkVal = localStorage.getItem('dark');
-      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
-    }
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Salud</a>
+</div>
 
-    
-    darkScheme.addEventListener('change', (event) => {
-      setDark(event.matches);
-    });
 
-    
-    const btnDark = document.querySelector('.btn-dark');
-    btnDark.addEventListener('click', () => {
-      setDark(localStorage.getItem('dark') !== 'true');
-    });
-  </script>
 
-  <div
-    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
-  >
-    
-    
 
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">技术</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/life/">生活</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
     
-    <nav
-      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
-    >
-      
-      <a
-        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
-        style="--url: url(./github.svg)"
-        href=" https://github.com/supuwoerc "
-        target="_blank"
-      ></a>
-      
-    </nav>
-    
+    <header class="post-header">
+      <h1 class="post-title">前端包管理工具小结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-01-20 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a>
+            </div>
+          <span class="more-meta"> 约 415 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#nrm管理npm资源仓库的包">nrm：管理npm资源仓库的包</a></li>
+            <li><a href="#nvm管理-node版本的包">nvm：管理 node版本的包</a></li>
+            <li><a href="#pnpm高性能的包管理工具">pnpm：高性能的包管理工具</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
-</header>
-
-
-    <main
-      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
-    >
-      
-
-<article>
-  <header class="mb-20">
-    <h1 class="!my-0 pb-2.5">前端包管理工具小结</h1>
-
-    
-    <div class="text-sm opacity-60">
-      
-      <time>Jan 20, 2023</time>
-      
-      
-    </div>
-    
-  </header>
-
-  <section><h3 id="nrm管理npm资源仓库的包">nrm：管理npm资源仓库的包</h3>
+</div>
+    <div class="post-content">
+      <h3 id="nrm管理npm资源仓库的包">nrm：管理npm资源仓库的包</h3>
 <ul>
 <li>安装</li>
 </ul>
-<pre tabindex="0"><code>npm install -g nrm #全局安装
-nrm ls #查看当前可用的源
-nrm current #查看当前使用的源
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g nrm #全局安装
+</span></span><span class="line"><span class="cl">nrm ls #查看当前可用的源
+</span></span><span class="line"><span class="cl">nrm current #查看当前使用的源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>添加源</li>
 </ul>
-<pre tabindex="0"><code>nrm add &lt;registry&gt; &lt;url&gt; #添加源
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nrm add &lt;registry&gt; &lt;url&gt; #添加源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>切换源</li>
 </ul>
-<pre tabindex="0"><code>nrm use taobao #切换到taobao源
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nrm use taobao #切换到taobao源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>测试源速度</li>
 </ul>
-<pre tabindex="0"><code>nrm test &lt;registry&gt; #测试源
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nrm test &lt;registry&gt; #测试源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>删除源</li>
 </ul>
-<pre tabindex="0"><code>nrm del &lt;registry&gt;#删除源
-</code></pre><h3 id="nvm管理-node版本的包">nvm：管理 node版本的包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nrm del &lt;registry&gt;#删除源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="nvm管理-node版本的包">nvm：管理 node版本的包</h3>
 <ul>
 <li>安装</li>
 </ul>
-<pre tabindex="0"><code>brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">brew install nvm #我是使用macos的brew安装的 win需要去官网下载安装
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>安装不同的node版本</li>
 </ul>
-<pre tabindex="0"><code>nvm install &lt;version&gt; #安装特定版本号的node
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nvm install &lt;version&gt; #安装特定版本号的node
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>卸载某一个版本的node</li>
 </ul>
-<pre tabindex="0"><code>nvm uninstall &lt;version&gt; #卸载具体版本的node
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nvm uninstall &lt;version&gt; #卸载具体版本的node
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>切换版本</li>
 </ul>
-<pre tabindex="0"><code>nvm use &lt;version&gt; #切换某一个版本
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nvm use &lt;version&gt; #切换某一个版本
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>查看已经安装的版本</li>
 </ul>
-<pre tabindex="0"><code>nvm ls #查看本地安装的版本列表
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nvm ls #查看本地安装的版本列表
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>查看远程仓库的所有可安装版本</li>
 </ul>
-<pre tabindex="0"><code>nvm ls-remote #查看可安装的全部版本
-</code></pre><h3 id="pnpm高性能的包管理工具">pnpm：高性能的包管理工具</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nvm ls-remote #查看可安装的全部版本
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="pnpm高性能的包管理工具">pnpm：高性能的包管理工具</h3>
 <ul>
 <li>安装</li>
 </ul>
-<pre tabindex="0"><code>npm install -g pnpm #全局安装pnpm
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g pnpm #全局安装pnpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>配置本地的仓库位置</li>
 </ul>
-<pre tabindex="0"><code>pnpm config set registry http://registry.npm.taobao.org  #设置pnpm仓库的源
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pnpm config set registry http://registry.npm.taobao.org  #设置pnpm仓库的源
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>关于安装依赖的一些命令</li>
 </ul>
-<pre tabindex="0"><code>pnpm install xxx  #安装包
-pnpm add -D xxx #写入开发依赖里面
-pnpm add -g  xxx  #全局安装
-</code></pre><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pnpm install xxx  #安装包
+</span></span><span class="line"><span class="cl">pnpm add -D xxx #写入开发依赖里面
+</span></span><span class="line"><span class="cl">pnpm add -g  xxx  #全局安装
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>更新和卸载包</li>
 </ul>
-<pre tabindex="0"><code>pnpm up  xxx #更新包
-pnpm remove xxx #卸载包
-</code></pre></section>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pnpm up  xxx #更新包
+</span></span><span class="line"><span class="cl">pnpm remove xxx #卸载包
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">zhangqm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2023-01-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/">
+            <span class="next-text nav-default">缓存小结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
 
   
-  
 
   
-  
-  
-  <nav
-    class="mt-24 flex rounded-lg bg-black/[3%] p-1.5 text-lg dark:bg-white/[8%]"
-  >
-    
-    
-    <a
-      class="ml-auto flex w-1/2 items-center justify-end rounded-md p-6 pl-3 no-underline hover:bg-black/[2%]"
-      href="https://www.supuwoerc.xyz/post/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/"
-      ><span>缓存小结</span><span class="ml-1.5">→</span></a
-    >
-    
-  </nav>
-  
 
-  
-  
-
-  
-  
-</article>
-
-
+      </div>
     </main>
 
-    <footer
-  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
->
-  <div class="mr-auto">
-    &copy; 2023
-    <a class="link" href="https://www.supuwoerc.xyz">Salud!</a>
-  </div>
-  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
-    >Powered by Hugo️️</a
-  >️
-  <a
-    class="link"
-    href="https://github.com/nanxiaobei/hugo-paper"
-    rel="noopener"
-    target="_blank"
-    >▷ Paper 6</a
-  >
-</footer>
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/supuwoerc" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.supuwoerc.xyz/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
 
-  </body>
+<div class="copyright">
+  <span class="power-by">
+    Power by <a class="hexo-link" href="https://gohugo.io">Hugo</a> 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme- - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>zhangqm</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
 </html>
