@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>浏览器内存小结 - Salud</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="zhangqm" /><meta name="description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend =" /><meta name="keywords" content="Hugo, blog, salud, zhangqm, 前端, 技术, 代码, 程序" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.109.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.supuwoerc.xyz/post/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E5%AD%98%E5%B0%8F%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.7c7c57044d415861e8f490711427310afa7bdf6cbd217c11e71d9d3e66a35348.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="浏览器内存小结" />
+<meta property="og:description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend =" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.supuwoerc.xyz/post/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E5%AD%98%E5%B0%8F%E7%BB%93/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-31T18:45:31+08:00" />
+<meta property="article:modified_time" content="2023-01-31T18:45:31+08:00" />
+<meta itemprop="name" content="浏览器内存小结">
+<meta itemprop="description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend ="><meta itemprop="datePublished" content="2023-01-31T18:45:31+08:00" />
+<meta itemprop="dateModified" content="2023-01-31T18:45:31+08:00" />
+<meta itemprop="wordCount" content="1382">
+<meta itemprop="keywords" content="前端," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="浏览器内存小结"/>
+<meta name="twitter:description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend ="/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Salud</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">技术</li>
+      </a><a href="/life/">
+        <li class="mobile-menu-item">生活</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Salud</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">技术</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/life/">生活</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">浏览器内存小结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-01-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a>
+            </div>
+          <span class="more-meta"> 约 1382 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#javascript中的gcgarbage-collection算法机制">JavaScript中的GC(Garbage collection)算法机制</a></li>
+            <li><a href="#javascript常见的内存泄漏原因">JavaScript常见的内存泄漏原因</a></li>
+            <li><a href="#使用开发者工具分析">使用开发者工具分析</a></li>
+            <li><a href="#参考">参考</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <hr>
+<h3 id="javascript中的gcgarbage-collection算法机制">JavaScript中的GC(Garbage collection)算法机制</h3>
+<ul>
+<li>引用计数</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">user1</span><span class="o">=</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">user2</span><span class="o">=</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">user1</span><span class="p">.</span><span class="nx">friend</span> <span class="o">=</span> <span class="nx">user2</span>   <span class="c1">// user2引用数+1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">user2</span><span class="p">.</span><span class="nx">friend</span> <span class="o">=</span> <span class="nx">user1</span>   <span class="c1">// user1引用数+1,并且user1和user2为互相引用关系
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">func</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>原理：当GC发现某一块内存中对象中的引用数为0时，GC会回收该块内存，实现垃圾回收。
+缺陷：上述代码中存在循环引用的情况，那么在方法调用后<code>user1</code>和<code>user2</code>的引用数永远不会为0，GC机制不能将这两个变量回收掉。（一般出现在IE&lt;8，Firefox3的浏览器中，IE6和IE7中有一部分对象是C++实现的COM（component object model），该种对象依赖于引用计数的策略来回收）</p>
+</blockquote>
+<ul>
+<li>标记清除（目前主流的浏览器均实现了该方式的GC）</li>
+</ul>
+<blockquote>
+<p>原理：GC从<code>window</code>对象开始逐级对对象进行遍历，将可到达的节点对象结果和全部对象数据做对比，如果存在不被引用的对象空间，那么该空间会被回收。
+优点：解决了循环引用算法不能合理GC的问题，即使两个对象互相引用，只要这两个对象不被外部访问（可到达的节点），那么互相引用的对象会被一起回收。</p>
+</blockquote>
+<p><img src="/mark-sweep-5166632.gif" alt="mark-sweep"></p>
+<h3 id="javascript常见的内存泄漏原因">JavaScript常见的内存泄漏原因</h3>
+<ul>
+<li>非严格模式下的在<code>window</code>上缓存了变量</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">bar</span> <span class="o">=</span> <span class="nx">something</span> <span class="c1">//非严格模式下这样的语句会在window上挂载该变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">or</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="nx">something</span> <span class="c1">//在上下文为window时该语句等同于上面
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">func</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>控制台上的输出</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//tips：一般来说可以借助webpack等构建工具来自动清除相类似的输出语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="c1">//当用户打开控制台时候，这个变量会占用内存（不打开控制台不会出现内存占用）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>闭包</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">function</span> <span class="nx">test</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">a</span><span class="o">++</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="o">++</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">test</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// testFn能访问它的上下文中的全部数据（func的作用域），占用内存会比较大
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">testFn</span> <span class="o">=</span> <span class="nx">func</span><span class="p">()</span> <span class="c1">//此处的声明将会的到func执行后返回的test函数，该函数一直会被引用，内存空间将不会释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">testFn</span><span class="p">()</span>   <span class="c1">//调用函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">testFn</span> <span class="o">=</span> <span class="kc">null</span> <span class="c1">//通过手动释放内存来避免引起的内存问题
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>定时器未及时清除</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl"> <span class="kr">const</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(()=&gt;{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//do something
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span><span class="mi">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">timer</span><span class="p">)</span> <span class="c1">//清除定时器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">func</span><span class="p">()</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>listener</code>中的匿名函数和错误的解绑</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 为按钮绑定点击事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">bindEvent</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 绑定的是匿名函数 ！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">btn</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">    <span class="c1">// do something
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span> <span class="kc">false</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">bindEvent</span><span class="p">()</span> <span class="c1">// 每次调用一次方法btn都会绑定上一个新的函数，因为匿名函数在内存中占用的内存不一样
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">//vue中借助lodash的防抖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">debounce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">window</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">debounce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>同一个元素节点注册了多个相同的EventListener，那么重复的实例会被抛弃。这么做不会让得EventListener被重复调用，也不需要用removeEventListener手动清除多余的EventListener，因为重复的都被自动抛弃了。而这条规则只是针对于命名函数。对于匿名函数，浏览器会将其看做不同的EventListener，所以只要将匿名的EventListener，命名一下就可以解决问题</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">callback</span> <span class="o">=</span>  <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">    <span class="c1">// do something
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 为按钮绑定点击事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">bindEvent</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 绑定的是匿名函数 ！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">btn</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">bindEvent</span><span class="p">()</span> <span class="c1">// 此时callback始终是一个函数对象
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="使用开发者工具分析">使用开发者工具分析</h3>
+<p>TODO</p>
+<h3 id="参考">参考</h3>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/322356761">排查JavaScript内存泄漏</a></li>
+<li><a href="https://github.com/zhansingsong/js-leakage-patterns/blob/master/README.md">内存常见的 JavaScript 内存泄露分析</a></li>
+<li><a href="https://github.com/zhansingsong/js-leakage-patterns/blob/master/JavaScript%E5%86%85%E5%AD%98%E9%82%A3%E7%82%B9%E4%BA%8B/JavaScript%E5%86%85%E5%AD%98%E9%82%A3%E7%82%B9%E4%BA%8B.md">JavaScript内存那点事</a></li>
+<li><a href="https://github.com/zhansingsong/js-leakage-patterns/blob/master/IE%3C8%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E5%AF%BC%E8%87%B4%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/IE%3C8%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E5%AF%BC%E8%87%B4%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2.md">IE&lt;8循环引用导致的内存泄漏</a></li>
+<li><a href="https://github.com/zhansingsong/js-leakage-patterns/blob/master/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%B9%8BjQuery.cache/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%B9%8BjQuery.cache.md">内存泄漏之jQuery.cache</a></li>
+<li><a href="https://github.com/zhansingsong/js-leakage-patterns/blob/master/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%B9%8BListeners/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%B9%8BListeners.md">内存泄漏之Listeners</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">zhangqm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2023-01-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E5%89%8D%E7%AB%AF%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%B0%8F%E7%BB%93/">
+            <span class="next-text nav-default">前端包管理工具小结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/supuwoerc" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.supuwoerc.xyz/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Power by <a class="hexo-link" href="https://gohugo.io">Hugo</a> 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>zhangqm</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
