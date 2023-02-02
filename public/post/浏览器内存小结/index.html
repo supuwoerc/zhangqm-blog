@@ -48,7 +48,7 @@
 <meta itemprop="name" content="浏览器内存小结">
 <meta itemprop="description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend ="><meta itemprop="datePublished" content="2023-01-31T18:45:31+08:00" />
 <meta itemprop="dateModified" content="2023-01-31T18:45:31+08:00" />
-<meta itemprop="wordCount" content="1382">
+<meta itemprop="wordCount" content="2420">
 <meta itemprop="keywords" content="前端," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="浏览器内存小结"/>
 <meta name="twitter:description" content="JavaScript中的GC(Garbage collection)算法机制 引用计数 1 2 3 4 5 6 7 function func(){ const user1={} const user2={} user1.friend = user2 // user2引用数&#43;1 user2.friend ="/>
@@ -135,8 +135,8 @@
         <div class="post-category">
             <a href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a>
             </div>
-          <span class="more-meta"> 约 1382 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
+          <span class="more-meta"> 约 2420 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
     </header>
@@ -370,7 +370,105 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="使用开发者工具分析">使用开发者工具分析</h3>
-<p>TODO</p>
+<blockquote>
+<p>下面使用<code>Vue3</code>搭建的简单示例来模拟内存泄漏的场景，现在常见的业务系统都是依赖于框架和库来搭建，这样的例子更能贴切点实际场景，来总结如何分析应用内存泄漏</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vue" data-lang="vue"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">a-button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;primary&#34;</span> <span class="nt">@click</span><span class="s">=&#34;mockMomery&#34;</span><span class="p">&gt;</span> <span class="err">模拟内存溢出</span> <span class="err">&lt;/</span><span class="na">a</span><span class="nt">-button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">a-button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;primary&#34;</span> <span class="nt">@click</span><span class="s">=&#34;mockDetachedDom&#34;</span><span class="p">&gt;</span> <span class="err">脱离文档流的</span><span class="na">dom</span> <span class="err">&lt;/</span><span class="na">a</span><span class="nt">-button</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mockMomery</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;模拟内存溢出&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">patch</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">200</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="s2">&#34;一些测试文字&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">mockMomeryStrs</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">mockMomeryStrs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;一些测试文字&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">mockMomeryStrs</span><span class="p">.</span><span class="nx">push</span><span class="p">(...</span><span class="nx">patch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">mockMomeryStrs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mockDetachedDom</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;模拟脱离文档流的内存溢出&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">detachedNodes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">detachedNodes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;div&#34;</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nb">window</span> <span class="nx">as</span> <span class="nx">any</span><span class="p">).</span><span class="nx">detachedNodes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;div&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>确定可以操作是否真的会是内存泄漏</li>
+</ul>
+<blockquote>
+<p>打开控制台调试工具，找到<code>Perfermance</code>面板，刷新网页后点击录制按钮，重复多次的执行可能导致页面崩溃的操作后点击结束录制，可以看到录制时间内浏览器关于<code>JS Heap Size</code>的变化，如果出现了类似下图的曲线（内存占用线的最低部一直不断的升高），那么录制过程中的操作很有可能就是导致内存泄漏的部分</p>
+</blockquote>
+<p><img src="/image-20230202181811694.png" alt="image-20230202181811694"></p>
+<ul>
+<li>借助内存快照分析两次操作直接发生了什么</li>
+</ul>
+<blockquote>
+<p>上面一步的操作基本可以确定那些页面上的操作可能会导致内存泄漏，下面就利用控制台上的<code>memory</code>面板来具体的分析每次操作之间到底发是什么发生了内存变化。</p>
+<p>Tips：这里记录一下Gmai团队分享出来的内存分析技巧（three snapshot技巧）</p>
+<ul>
+<li>在记录第一个堆快照之前你可以先做一些“预热”操作，避免一些懒加载和缓存策略影响到了对内存的分析</li>
+<li>预热完成，记录当前页面的一次内存快照</li>
+<li>操作一次可能导致内存泄漏的操作，再次记录一次内存快照</li>
+<li>多次执行可能导致内存泄漏的操作，最后再记录一次内存快照</li>
+<li>选择对比方式来比较每次快照之间的内存变化</li>
+</ul>
+</blockquote>
+<p><img src="/image-20230202183625765.png" alt="image-20230202183625765"></p>
+<blockquote>
+<p>对比两次内存快照，按照<code>Retained Size</code>（对象回收可释放内存大小）或者<code>Shallow Size</code>（对象自身占用内存，即不包含对象内的引用的内存大小）排序，发现一些比较大的内存变化</p>
+</blockquote>
+<p><img src="/image-20230202204350469.png" alt="image-20230202204350469"></p>
+<ul>
+<li>根据对象的引用树定位问题代码</li>
+<li>游离于<code>DOM</code>树之外的游离<code>Detached DOM</code>导致的内存溢出</li>
+</ul>
+<blockquote>
+<p>除了<code>javaScript</code>对象导致的内存溢出，<code>Detached DOM</code>也会是导致引用内存溢出的原因之一</p>
+<p><code>Detached DOM</code>即未出现在<code>document</code>文档流上的元素，但是该元素被引用，导致不能被回收内存</p>
+<p>同样的分析方式，在<code>Class Filter</code>中添加过滤条件，筛选出游离于文档流的元素</p>
+</blockquote>
+<p><img src="/image-20230202210508977.png" alt="image-20230202210508977"></p>
+<ul>
+<li>
+<p>参考文章：<a href="https://juejin.cn/post/7037126163864485925">游离DOM导致地内存泄漏</a></p>
+</li>
+<li>
+<p>示例站点：<a href="https://jec.fyi/demo/detached-dom">Detached DOM</a></p>
+</li>
+</ul>
 <h3 id="参考">参考</h3>
 <ul>
 <li><a href="https://zhuanlan.zhihu.com/p/322356761">排查JavaScript内存泄漏</a></li>
