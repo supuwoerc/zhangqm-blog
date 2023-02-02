@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>前端埋点方案小结 - Salud</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="zhangqm" /><meta name="description" content="混淆在业务代码中 直接在业务方法上添加日志上报的方法 与业务代码耦合在一起，难以维护 1 2 3 4 5 6 7 8 9 10 11 @Component({ name: &amp;#34;Demo&amp;#34;, }) export default class Demo extends Vue { btnClick(){ /** * 一些业务代" /><meta name="keywords" content="Hugo, blog, salud, zhangqm, 前端, 技术, 代码, 程序" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.109.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88%E5%B0%8F%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.7c7c57044d415861e8f490711427310afa7bdf6cbd217c11e71d9d3e66a35348.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="前端埋点方案小结" />
+<meta property="og:description" content="混淆在业务代码中 直接在业务方法上添加日志上报的方法 与业务代码耦合在一起，难以维护 1 2 3 4 5 6 7 8 9 10 11 @Component({ name: &#34;Demo&#34;, }) export default class Demo extends Vue { btnClick(){ /** * 一些业务代" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.supuwoerc.xyz/post/%E5%89%8D%E7%AB%AF%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88%E5%B0%8F%E7%BB%93/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-02-02T15:55:42+08:00" />
+<meta property="article:modified_time" content="2023-02-02T15:55:42+08:00" />
+<meta itemprop="name" content="前端埋点方案小结">
+<meta itemprop="description" content="混淆在业务代码中 直接在业务方法上添加日志上报的方法 与业务代码耦合在一起，难以维护 1 2 3 4 5 6 7 8 9 10 11 @Component({ name: &#34;Demo&#34;, }) export default class Demo extends Vue { btnClick(){ /** * 一些业务代"><meta itemprop="datePublished" content="2023-02-02T15:55:42+08:00" />
+<meta itemprop="dateModified" content="2023-02-02T15:55:42+08:00" />
+<meta itemprop="wordCount" content="673">
+<meta itemprop="keywords" content="前端," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="前端埋点方案小结"/>
+<meta name="twitter:description" content="混淆在业务代码中 直接在业务方法上添加日志上报的方法 与业务代码耦合在一起，难以维护 1 2 3 4 5 6 7 8 9 10 11 @Component({ name: &#34;Demo&#34;, }) export default class Demo extends Vue { btnClick(){ /** * 一些业务代"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Salud</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">技术</li>
+      </a><a href="/life/">
+        <li class="mobile-menu-item">生活</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Salud</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">技术</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/life/">生活</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">前端埋点方案小结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-02-02 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a>
+            </div>
+          <span class="more-meta"> 约 673 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#混淆在业务代码中">混淆在业务代码中</a></li>
+            <li><a href="#vue基于指令的埋点实现">Vue基于指令的埋点实现</a></li>
+            <li><a href="#借助ts装饰器的埋点实现">借助TS装饰器的埋点实现</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="混淆在业务代码中">混淆在业务代码中</h3>
+<blockquote>
+<p>直接在业务方法上添加日志上报的方法</p>
+</blockquote>
+<ul>
+<li>与业务代码耦合在一起，难以维护</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="err">@</span><span class="nx">Component</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;Demo&#34;</span><span class="p">,</span> <span class="p">})</span> 
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Demo</span> <span class="kr">extends</span> <span class="nx">Vue</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">btnClick</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">        * 一些业务代码实现
+</span></span></span><span class="line"><span class="cl"><span class="cm">        */</span>
+</span></span><span class="line"><span class="cl">        <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">        * 日志上报代码的实现
+</span></span></span><span class="line"><span class="cl"><span class="cm">        */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="vue基于指令的埋点实现">Vue基于指令的埋点实现</h3>
+<blockquote>
+<p><code>Vue3</code>中借助自定义指令实现点击事件埋点指令</p>
+</blockquote>
+<ul>
+<li>区别于<code>Vue2</code>注册指令的方式，<code>Vue3</code>不在将指令挂载到<code>Vue.prototype</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">App</span><span class="p">,</span> <span class="nx">Directive</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">logger</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./modules/logger&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 注册全局指令
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param app
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">directives</span><span class="o">:</span> <span class="nx">Record</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span> <span class="nx">Directive</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">logger</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">directiveRegister</span> <span class="o">=</span> <span class="p">(</span><span class="nx">app</span><span class="o">:</span> <span class="nx">App</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">directives</span><span class="p">).</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">app</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">directives</span><span class="p">[</span><span class="nx">item</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>自定义指令实现细节</p>
+</blockquote>
+<ul>
+<li>在指令绑定到元素<code>attribute</code>前为指令元素注入点击回调和指令参数</li>
+<li>当传入指令的参数发生变化时需要更新元素的的参数</li>
+<li>指令绑定元素在<code>DOM</code>树上卸载前需要移除事件监听</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">clickLogAction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;@/utils/logger&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Directive</span><span class="p">,</span> <span class="nx">DirectiveBinding</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">interface</span> <span class="nx">LoggerElement</span> <span class="kr">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">loggerParams</span><span class="o">:</span> <span class="nx">any</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">loggerCallback</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="k">void</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">logger</span><span class="o">:</span> <span class="nx">Directive</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">created</span><span class="p">(</span><span class="nx">el</span><span class="o">:</span> <span class="nx">LoggerElement</span><span class="p">,</span> <span class="nx">binding</span><span class="o">:</span> <span class="nx">DirectiveBinding</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="p">.</span><span class="nx">loggerParams</span> <span class="o">=</span> <span class="nx">binding</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="p">.</span><span class="nx">loggerCallback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">clickLogAction</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">loggerParams</span><span class="p">);</span>  <span class="c1">//自定义日志上报的方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">updated</span><span class="p">(</span><span class="nx">el</span><span class="o">:</span> <span class="nx">LoggerElement</span><span class="p">,</span> <span class="nx">binding</span><span class="o">:</span> <span class="nx">DirectiveBinding</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="p">.</span><span class="nx">loggerParams</span> <span class="o">=</span> <span class="nx">binding</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mounted</span><span class="p">(</span><span class="nx">el</span><span class="o">:</span> <span class="nx">LoggerElement</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;click&#34;</span><span class="p">,</span> <span class="nx">el</span><span class="p">.</span><span class="nx">loggerCallback</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">beforeUnmount</span><span class="p">(</span><span class="nx">el</span><span class="o">:</span> <span class="nx">LoggerElement</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s2">&#34;click&#34;</span><span class="p">,</span> <span class="nx">el</span><span class="p">.</span><span class="nx">loggerCallback</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="借助ts装饰器的埋点实现">借助TS装饰器的埋点实现</h3>
+<blockquote>
+<p>借助<code>TypeScript</code>中的装饰器对方法进行修饰</p>
+</blockquote>
+<ul>
+<li><code>Vue3</code>中的<code>setup</code>方法和语法糖均不支持该TS预案：<a href="https://github.com/vuejs/core/issues/5267">Github Issue</a></li>
+<li>下面的代码是同步埋点的方案，如果需要依赖于异步数据的话，需要自己实现<code>Promise</code>链式的将异步数据传递下去</li>
+<li>本质上是实现了编程中面向切面编程的思想(AOP)</li>
+<li>可以阅读下这篇文章：<a href="https://juejin.cn/post/7011797590207365128">Javascript中的AOP</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 点击埋点装饰器工厂
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param 埋点参数
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @returns
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">ClickLog</span><span class="p">(</span><span class="nx">params</span><span class="o">:</span> <span class="nx">ClickLogParams</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="o">:</span> <span class="nx">any</span><span class="p">,</span> <span class="nx">key</span><span class="o">:</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">descriptor</span><span class="o">:</span> <span class="nx">PropertyDescriptor</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">descriptor</span><span class="p">.</span><span class="nx">value</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">descriptor</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kr">async</span> <span class="kd">function</span> <span class="p">(...</span><span class="nx">args</span><span class="o">:</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * 实现埋点方法上报数据
+</span></span></span><span class="line"><span class="cl"><span class="cm">             */</span>
+</span></span><span class="line"><span class="cl">           <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">descriptor</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">zhangqm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2023-02-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E5%AD%98%E5%B0%8F%E7%BB%93/">
+            <span class="next-text nav-default">浏览器内存小结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/supuwoerc" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.supuwoerc.xyz/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Power by <a class="hexo-link" href="https://gohugo.io">Hugo</a> 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>zhangqm</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
