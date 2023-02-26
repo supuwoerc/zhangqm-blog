@@ -58,13 +58,6 @@
   </url>
   
   <url>
-    <loc>https://www.supuwoerc.xyz/tags/orm/</loc>
-    <lastmod>2023-02-26T13:00:09+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.supuwoerc.xyz/post/</loc>
     <lastmod>2023-02-26T13:00:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -79,15 +72,15 @@
   </url>
   
   <url>
-    <loc>https://www.supuwoerc.xyz/tags/</loc>
+    <loc>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2023-02-26T13:00:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-02-26T13:00:09+08:00</lastmod>
+    <loc>https://www.supuwoerc.xyz/tags/</loc>
+    <lastmod>2023-02-02T15:55:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
