@@ -1,10 +1,10 @@
 ---
 title: "实践Gorm文档-创建连接"
 date: 2023-02-26T13:00:09+08:00
-menu: "main"
+menu: "tech"
 weight: 50
-tags: []
-categories: []
+tags: ["ORM"]
+categories: ["技术"]
 draft: false
 typora-root-url: ../../static/
 typora-copy-images-to: ../../static/
