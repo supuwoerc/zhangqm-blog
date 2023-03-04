@@ -13,7 +13,7 @@
       <pubDate>Thu, 19 Jan 2023 16:43:12 +0800</pubDate>
       
       <guid>https://www.supuwoerc.xyz/post/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2hugo%E5%8D%9A%E5%AE%A2/</guid>
-      <description>服务器安装jdk jenkins最新版本要求jdk版本要11或者17的版本，我自己最开始服务器上部署过jdk1.8所以得先卸载掉 查询和卸载已经</description>
+      <description>服务器安装jdk jenkins最新版本要求jdk版本要11或者17的版本，我自己最开始服务器上部署过jdk1.8所以得先卸载掉 查询和卸载已经安装过的jdk rpm -qa |</description>
     </item>
     
   </channel>
