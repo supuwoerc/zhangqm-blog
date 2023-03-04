@@ -1,3 +1,6 @@
 [submodule "themes/even"]
 	path = themes/even
 	url = git@github.com:supuwoerc/hugo-theme-even.git
+[submodule "themes/virgo"]
+	path = themes/virgo
+	url = https://github.com/loveminimal/hugo-theme-virgo.git
