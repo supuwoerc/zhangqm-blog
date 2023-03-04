@@ -7,7 +7,7 @@ theme = 'virgo'
 
 hasCJKLanguage = true
 summaryLength = 80
-paginate = 12
+paginate = 5
 enableGitInfo = true
 
 [params]
@@ -56,24 +56,24 @@ path = '/nav'
 en = 'Nav'
 zh = '导航'
 icon = '🎯'
+[params.menu.11]
+active = true
+path = '/posts'
+en = 'posts'
+zh = '文章'
+icon = '📜'
 [params.menu.22]
-active = true
-path = '/post'
-en = 'post'
-zh = '技术'
-icon = '📜'
-[params.menu.33]
-active = true
-path = '/life'
-en = 'life'
-zh = '生活'
-icon = '📜'
-[params.menu.44]
 active = true
 path = '/archive'
 en = 'Archive'
 zh = '归档'
 icon = '🎉'
+[params.menu.33]
+active = true
+path = '/search'
+en = 'Search'
+zh = '搜索'
+icon = '🔍'
 
 # 首页图片/文字
 [params.img]
@@ -83,8 +83,8 @@ notImgButWords = false
 # 内置了 `girl.jpg, wukong.jpg, and tux.jpg`，当然你可以
 # 把自己喜欢图片放在 `static/imgs/` 目录中，并在 `src` 引用它，
 # 你还可以通过 `width` 调整引入图片的显示大小
-src = 'logo.png'
-width = 360
+src = 'greetings.gif'
+width = 520
 # words = "Stay hungry, Stay foolish. <br>Your time is limited, so don't waste it living someone else's life. <br>Have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary. <br>-- Steve Jobs."
 # words = "多少事，从来急；<br>天地转，光阴迫。<br>一万年太久，只争朝夕。<br>-- 教员"
 words = "“yoooo”"
@@ -120,3 +120,5 @@ startLevel = 2
 [markup.goldmark]
 [markup.goldmark.renderer]
 unsafe = true
+[outputs]
+home = ["HTML", "RSS", "JSON"]

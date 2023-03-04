@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>缓存 on Salud</title>
+    <link>https://www.supuwoerc.xyz/tags/%E7%BC%93%E5%AD%98/</link>
+    <description>Recent content in 缓存 on Salud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 04 Mar 2023 18:47:01 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/tags/%E7%BC%93%E5%AD%98/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>缓存小结</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Sat, 04 Mar 2023 18:47:01 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/%E7%BC%93%E5%AD%98%E5%B0%8F%E7%BB%93/</guid>
+      <description>http-cache优先级 先判断是否命中强缓存，命中将从disk取相关资源 判断是否命中协商缓存，命中将发起一个请求，服务端根据Request Header里的If</description>
+    </item>
+    
+  </channel>
+</rss>

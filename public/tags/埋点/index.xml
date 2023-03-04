@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>埋点 on Salud</title>
+    <link>https://www.supuwoerc.xyz/tags/%E5%9F%8B%E7%82%B9/</link>
+    <description>Recent content in 埋点 on Salud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 04 Mar 2023 18:49:19 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/tags/%E5%9F%8B%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端埋点方案小结</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/%E5%89%8D%E7%AB%AF%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Sat, 04 Mar 2023 18:49:19 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/%E5%89%8D%E7%AB%AF%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88%E5%B0%8F%E7%BB%93/</guid>
+      <description>混淆在业务代码中 直接在业务方法上添加日志上报的方法 与业务代码耦合在一起，难以维护 @Component({ name: &amp;#34;Demo&amp;#34;, }) export default class Demo extends Vue { btnClick(){ /** * 一些业务代码实现 */ /** * 日志上报代码的实现 */ } } Vue</description>
+    </item>
+    
+  </channel>
+</rss>

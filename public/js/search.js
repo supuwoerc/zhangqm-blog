@@ -1,7 +1,9 @@
 let siteParams = parseSiteParams();
 
 let data = document.querySelector('#data').innerText.trim();
+console.log(data)
 data = data.slice(0, data.length - 2) + ']';
+
 let map = JSON.parse(data);
 
 let scClear = document.querySelector('#sc-clear');
@@ -22,7 +24,7 @@ function search() {
     let scResPostsCounts = 0, // 搜索结果所在页面数
         scResScValCounts = 0; // 搜索词出现的总次数
 
-        
+
     map.forEach(item => {
         if (!scVal) return;
         if (item.content.indexOf(scVal) > -1 || item.title.indexOf(scVal) > -1) {
@@ -32,7 +34,7 @@ function search() {
             let _strStyle0 = '<span style="background: yellow;">'
             let _strStyle1 = '</span>'
             let _strSeparator = '<hr>'
-            
+
             scResPostsCounts += 1;
             scResScValCounts += _arrIndex.length;
 
@@ -58,7 +60,7 @@ function search() {
                 strRes += _strSeparator;
                 let _startIdx = _idxItem - _radius + (_relidx + 1) * _strSeparator.length;
                 let _endIdx = _idxItem + _radius + (_relidx + 1) * _strSeparator.length;
-                strRes +=  item.content.substring(_startIdx, _endIdx);
+                strRes += item.content.substring(_startIdx, _endIdx);
             }
 
             // 进一步对搜索摘要进行处理，高亮搜索词
@@ -101,7 +103,7 @@ function search() {
     // Hmm... 强迫症，为 0 的时候，不想统计条目显示
     if (scResPostsCounts == 0) {
         document.querySelector('.statistics').style = 'opacity: 0;'
-    } 
+    }
     // 同样无值时不显示清空符号
     scClear.style = scVal ? 'opacity: 1' : 'opacity: 0';
 }
@@ -112,7 +114,7 @@ function scanStr(content, str) {
     let num = 0;                        // str 出现的次数
     let arrIndex = [];                  // str 出现的位置集合
 
-    while(index !== -1) {
+    while (index !== -1) {
         // console.log(index);
         arrIndex.push(index);
         num += 1;
@@ -126,21 +128,21 @@ function scanStr(content, str) {
 
 
 // 在字符串指定位置插入新的字符串
-function insertStr(str, start, newStr){   
+function insertStr(str, start, newStr) {
     return str.slice(0, start) + newStr + str.slice(start);
 }
 
 // 清空搜索框
 function clearInputVal() {
     if (!scInput.value) return;
-    scInput.value = '';    
+    scInput.value = '';
     search();
 }
 
 
 function parseSiteParams() {
-	let _vars = document.querySelector('#vars');
-	console.log(_vars.innerText);
+    let _vars = document.querySelector('#vars');
+    console.log(_vars.innerText);
 
-	return JSON.parse(_vars.innerText)
+    return JSON.parse(_vars.innerText)
 }

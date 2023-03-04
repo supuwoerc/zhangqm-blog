@@ -6,20 +6,47 @@
     <description>Recent content in Categories on Salud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 26 Feb 2023 13:00:09 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 04 Mar 2023 18:59:37 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>技术</title>
-      <link>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</link>
-      <pubDate>Sun, 26 Feb 2023 13:00:09 +0800</pubDate>
+      <title>后端</title>
+      <link>https://www.supuwoerc.xyz/categories/%E5%90%8E%E7%AB%AF/</link>
+      <pubDate>Sat, 04 Mar 2023 18:59:37 +0800</pubDate>
       
-      <guid>https://www.supuwoerc.xyz/categories/%E6%8A%80%E6%9C%AF/</guid>
+      <guid>https://www.supuwoerc.xyz/categories/%E5%90%8E%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>前端</title>
+      <link>https://www.supuwoerc.xyz/categories/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Sat, 04 Mar 2023 18:52:47 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/categories/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://www.supuwoerc.xyz/categories/nginx/</link>
+      <pubDate>Sat, 04 Mar 2023 18:47:01 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/categories/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>工具</title>
+      <link>https://www.supuwoerc.xyz/categories/%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Sat, 04 Mar 2023 18:44:39 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/categories/%E5%B7%A5%E5%85%B7/</guid>
       <description></description>
     </item>
     
     <item>
       <title>生活</title>
       <link>https://www.supuwoerc.xyz/categories/%E7%94%9F%E6%B4%BB/</link>
-      <pubDate>Tue, 17 Jan 2023 20:27:47 +0800</pubDate>
+      <pubDate>Sat, 04 Mar 2023 18:42:34 +0800</pubDate>
       
       <guid>https://www.supuwoerc.xyz/categories/%E7%94%9F%E6%B4%BB/</guid>
       <description></description>

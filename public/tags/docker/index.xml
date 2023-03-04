@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Salud</title>
+    <link>https://www.supuwoerc.xyz/tags/docker/</link>
+    <description>Recent content in docker on Salud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 04 Mar 2023 18:59:37 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【Docker】入门容器数据卷</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/</link>
+      <pubDate>Sat, 04 Mar 2023 18:59:37 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/</guid>
+      <description>数据卷 数据卷是宿主机和容器存在映射关系的文件或者目录 宿主机对数据卷修改会立即同步到容器，反之依然，即映射关系 数据卷和容器是多对多的关系，一个数据卷可以被多个容器</description>
+    </item>
+    
+    <item>
+      <title>【Docker】入门容器</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%B9%E5%99%A8/</link>
+      <pubDate>Sat, 04 Mar 2023 18:58:25 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%B9%E5%99%A8/</guid>
+      <description>创建&amp;amp;关闭容器 #-i:交互式操作，使得容器保持运行 -t:分配给容器一个终端来运行 --name容器名字 /bin/bash可以不加,加上会进入容器shell</description>
+    </item>
+    
+    <item>
+      <title>【Docker】入门安装和镜像</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%89%E8%A3%85%E5%92%8C%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Sat, 04 Mar 2023 18:57:47 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%89%E8%A3%85%E5%92%8C%E9%95%9C%E5%83%8F/</guid>
+      <description>安装 yum install -y yum-utils device-mapper-persistent-data lvm2 # 安装docker依赖的包 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-c</description>
+    </item>
+    
+  </channel>
+</rss>
