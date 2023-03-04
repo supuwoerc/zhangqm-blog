@@ -14,8 +14,8 @@ draft: false
  
 🔨 开发工具
 - [Goland](https://www.jetbrains.com/go/)
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Navicate Premium](https://navicat.com.cn/)
+- [Vs Code](https://code.visualstudio.com/)
+- [Navicate](https://navicat.com.cn/)
 - [Termius](https://www.termius.com/)
 - [Todo](https://todo.microsoft.com/zh-cn/)
 
