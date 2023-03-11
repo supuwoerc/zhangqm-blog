@@ -6,7 +6,16 @@
     <description>Recent content on Salud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 07 Mar 2023 22:46:15 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Mar 2023 23:04:08 +0800</lastBuildDate><atom:link href="https://www.supuwoerc.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【Gin】Validator验证美化</title>
+      <link>https://www.supuwoerc.xyz/posts/tech/ginvalidator%E9%AA%8C%E8%AF%81%E7%BE%8E%E5%8C%96/</link>
+      <pubDate>Sat, 11 Mar 2023 23:04:08 +0800</pubDate>
+      
+      <guid>https://www.supuwoerc.xyz/posts/tech/ginvalidator%E9%AA%8C%E8%AF%81%E7%BE%8E%E5%8C%96/</guid>
+      <description>Gin默认自带的结构体字段校验会在校验失败时返回错误信息，但是这些信息对客户端用户并不友好，例如下面的必填校验 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/gin-gonic/gin&amp;#34; &amp;#34;net/http&amp;#34; ) type User struct { Name string `form:&amp;#34;name&amp;#34; binding:&amp;#34;required&amp;#34;` Password string `form:&amp;#34;password&amp;#34; binding:&amp;#34;required&amp;#34;` } func LoginHandler(c *gin.Context) {</description>
+    </item>
+    
     <item>
       <title>【Docker】容器转为镜像</title>
       <link>https://www.supuwoerc.xyz/posts/tech/docker%E5%AE%B9%E5%99%A8%E8%BD%AC%E4%B8%BA%E9%95%9C%E5%83%8F/</link>
@@ -41,15 +50,6 @@
       
       <guid>https://www.supuwoerc.xyz/posts/tech/docker%E5%85%A5%E9%97%A8%E5%AE%89%E8%A3%85%E5%92%8C%E9%95%9C%E5%83%8F/</guid>
       <description>安装 yum install -y yum-utils device-mapper-persistent-data lvm2 # 安装docker依赖的包 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-c</description>
-    </item>
-    
-    <item>
-      <title>【Gorm】创建连接</title>
-      <link>https://www.supuwoerc.xyz/posts/tech/gorm%E5%88%9B%E5%BB%BA%E8%BF%9E%E6%8E%A5/</link>
-      <pubDate>Sat, 04 Mar 2023 18:55:11 +0800</pubDate>
-      
-      <guid>https://www.supuwoerc.xyz/posts/tech/gorm%E5%88%9B%E5%BB%BA%E8%BF%9E%E6%8E%A5/</guid>
-      <description>源码 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;gorm.io/driver/mysql&amp;#34; &amp;#34;gorm.io/gorm&amp;#34; &amp;#34;gorm.io/gorm/schema&amp;#34; &amp;#34;time&amp;#34; ) var DB *gorm.DB func init() { username := &amp;#34;root&amp;#34; //账号 password := &amp;#34;12345678&amp;#34; //密码 host := &amp;#34;127.0.0.1&amp;#34; //地址 port := 3306 //端口 dbname := &amp;#34;gorm_study&amp;#34; //数据库名 //可能会遇到tcp连接的问题：https://g</description>
     </item>
     
     <item>
